@@ -11,7 +11,7 @@ import { createWorld } from './game/world';
 import { GameUi } from './game/ui';
 
 const canvas = document.querySelector<HTMLCanvasElement>('#renderCanvas')!;
-const { engine, scene, plots, materials, plotMaterials, updateDayNight, updatePlotVisuals } = createWorld(canvas);
+const { engine, scene, plots, materials, plotMaterials, updateDayNight, updatePlotVisuals, updateWorldAnimations } = createWorld(canvas);
 
 const initialSave = loadGame();
 const INSTRUCTIONS_SEEN_KEY = 'brisa-camping-instructions-seen-v1';
@@ -324,6 +324,7 @@ scene.onBeforeRenderObservable.add(() => {
   }
   checkGuests();
   dayIcon = updateDayNight(getGameTimeMinutes());
+  updateWorldAnimations(elapsed);
   const displayedSecond = Math.floor(elapsed);
   if (displayedSecond !== lastDisplayedSecond) {
     lastDisplayedSecond = displayedSecond;

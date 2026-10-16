@@ -47,6 +47,6 @@ Para cambiar el aspecto de los modelos, empieza por `world.ts`; para ajustar eco
 - Mejora parcelas limpias y desocupadas para aumentar los ingresos, o compra una de las cuatro parcelas nuevas.
 - La partida guarda automáticamente el dinero, el día, las parcelas compradas, sus mejoras y las parcelas pendientes de limpieza en el navegador.
 - Usa la rueda del ratón para acercar o alejar la cámara y el botón de pausa para detener el tiempo.
-- El reloj muestra la hora del camping: un día completo dura 45 segundos de juego y la iluminación cambia gradualmente al amanecer, atardecer y noche. La hora también se conserva al guardar la partida.
+- El reloj muestra la hora del camping: un día completo dura 2 minutos de juego y la iluminación cambia gradualmente al amanecer, atardecer y noche. Las hogueras iluminan las parcelas ocupadas durante la noche y los huéspedes pasean suavemente por su parcela. La hora también se conserva al guardar la partida.
 
 La economía, el ritmo de llegada y la duración de las estancias son valores provisionales para iterar sobre la primera base.

@@ -4,6 +4,7 @@ import { ArcRotateCamera } from '@babylonjs/core/Cameras/arcRotateCamera';
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial';
 import { DirectionalLight } from '@babylonjs/core/Lights/directionalLight';
 import { HemisphericLight } from '@babylonjs/core/Lights/hemisphericLight';
+import { PointLight } from '@babylonjs/core/Lights/pointLight';
 import { ShadowGenerator } from '@babylonjs/core/Lights/Shadows/shadowGenerator';
 import '@babylonjs/core/Lights/Shadows/shadowGeneratorSceneComponent';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
@@ -275,6 +276,8 @@ export function createWorld(canvas: HTMLCanvasElement) {
   ];
   const selectedPlotBorder = material('selected plot border', '#EFCB78');
   const plotFrames: Mesh[][] = [];
+  const fireLights: PointLight[] = [];
+  const fireNightIntensities: number[] = [];
 
   function makeTent(index: number): Mesh {
     const center = plotCenters[index];
@@ -282,6 +285,13 @@ export function createWorld(canvas: HTMLCanvasElement) {
     tent.position.set(center.x, 0, center.z);
     tent.isVisible = false;
     tent.isPickable = false;
+    const fireLight = new PointLight(`campfire light ${index + 1}`, new Vector3(-1.02, 0.52, 0.49), scene);
+    fireLight.parent = tent;
+    fireLight.diffuse = new Color3(1, 0.48, 0.16);
+    fireLight.range = 5.5;
+    fireLight.intensity = 0;
+    fireLights[index] = fireLight;
+    fireNightIntensities[index] = 0;
     const cloth = index % 2 === 0 ? materials.terracotta : materials.sage;
     const fabricPanel = material(`tent fabric ${index + 1}`, index % 2 === 0 ? '#D99470' : '#BAC8A0');
     const seamMat = index % 2 === 0 ? materials.canvasShade : materials.leaf;
@@ -496,6 +506,7 @@ export function createWorld(canvas: HTMLCanvasElement) {
       return t * t * (3 - 2 * t);
     };
     const daylight = smoothstep(5, 7, hour) * (1 - smoothstep(17, 19, hour));
+    const night = 1 - daylight;
     const blend = (dayValue: number, nightValue: number): number => nightValue + (dayValue - nightValue) * daylight;
 
     scene.clearColor.r = blend(daySky.r, nightSky.r);
@@ -512,11 +523,29 @@ export function createWorld(canvas: HTMLCanvasElement) {
     sun.diffuse.r = blend(daySunColor.r, nightSunColor.r);
     sun.diffuse.g = blend(daySunColor.g, nightSunColor.g);
     sun.diffuse.b = blend(daySunColor.b, nightSunColor.b);
+    materials.flameOuter.emissiveColor = new Color3(0.28 * night, 0.09 * night, 0.025 * night);
+    materials.flameInner.emissiveColor = new Color3(0.34 * night, 0.22 * night, 0.05 * night);
+    fireNightIntensities.fill(night * 1.6);
     return daylight < 0.15
       ? String.fromCodePoint(0x263E)
       : daylight < 0.75
         ? String.fromCodePoint(0x25D0)
         : String.fromCodePoint(0x2600);
+  }
+
+  function updateWorldAnimations(timeSeconds: number): void {
+    fireLights.forEach((light, index) => {
+      light.intensity = fireNightIntensities[index] * (0.94 + Math.sin(timeSeconds * 8 + index) * 0.06);
+    });
+    plots.forEach((plot, index) => {
+      const guest = plot.guest;
+      if (!guest?.isEnabled()) return;
+      const phase = timeSeconds * 0.8 + index * 1.7;
+      guest.position.x = plotCenters[index].x - 1.25 + Math.sin(phase) * 0.34;
+      guest.position.y = 0.38 + Math.abs(Math.sin(phase * 2)) * 0.025;
+      guest.position.z = plotCenters[index].z - 0.38 + Math.cos(phase * 0.72) * 0.25;
+      guest.rotation.y = Math.cos(phase) * 0.35;
+    });
   }
 
   function updatePlotVisuals(selected: number, unlocked: number): void {
@@ -535,5 +564,5 @@ export function createWorld(canvas: HTMLCanvasElement) {
     });
   }
 
-  return { engine, scene, camera, plots, plotCenters, materials, plotMaterials, updateDayNight, updatePlotVisuals };
+  return { engine, scene, camera, plots, plotCenters, materials, plotMaterials, updateDayNight, updatePlotVisuals, updateWorldAnimations };
 }
