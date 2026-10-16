@@ -14,6 +14,7 @@ const canvas = document.querySelector<HTMLCanvasElement>('#renderCanvas')!;
 const { engine, scene, plots, materials, plotMaterials, updateDayNight, updatePlotVisuals } = createWorld(canvas);
 
 const initialSave = loadGame();
+const INSTRUCTIONS_SEEN_KEY = 'brisa-camping-instructions-seen-v1';
 let money = 180;
 let day = 1;
 let dayElapsed = 0;
@@ -26,6 +27,7 @@ let arrivalTimer = 3;
 let lastDisplayedSecond = -1;
 let nextGuestId = 1;
 let selectedGuestId: number | null = null;
+let instructionsNeedStart = false;
 let dayIcon = String.fromCodePoint(0x2600);
 const waitingGuests: Guest[] = [];
 
@@ -175,6 +177,42 @@ function togglePause(): void {
 function startNewGame(): void {
   if (loadGame() && !window.confirm('¿Quieres empezar una partida nueva? La partida guardada se reemplazará al guardar la nueva.')) return;
   startGame({ money: 180, day: 1, dayElapsed: 0, unlocked: STARTING_PLOTS, levels: [] });
+  if (!hasSeenInstructions()) {
+    instructionsNeedStart = true;
+    paused = true;
+    ui.setPaused(true);
+    ui.showInstructions(true);
+  }
+}
+
+function hasSeenInstructions(): boolean {
+  try {
+    return localStorage.getItem(INSTRUCTIONS_SEEN_KEY) === 'true';
+  } catch (error) {
+    console.warn('No se pudo consultar si ya se mostró la guía.', error);
+    return false;
+  }
+}
+
+function closeInstructions(): void {
+  ui.hideInstructions();
+  if (instructionsNeedStart) {
+    instructionsNeedStart = false;
+    try {
+      localStorage.setItem(INSTRUCTIONS_SEEN_KEY, 'true');
+    } catch (error) {
+      console.warn('No se pudo guardar el estado de la guía.', error);
+    }
+    paused = false;
+    ui.setPaused(false);
+  }
+}
+
+function openInstructions(): void {
+  instructionsNeedStart = false;
+  paused = true;
+  ui.setPaused(true);
+  ui.showInstructions(false);
 }
 
 function loadSavedGame(): void {
@@ -218,6 +256,8 @@ const ui = new GameUi({
   cleanPlot: cleanSelectedPlot,
   buyPlot: buySelectedPlot,
   togglePause,
+  openInstructions,
+  closeInstructions,
 }, updatePlotVisuals);
 
 ui.showMainMenu(initialSave !== null);

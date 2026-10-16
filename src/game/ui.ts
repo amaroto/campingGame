@@ -33,6 +33,8 @@ export type UiActions = {
   cleanPlot: () => void;
   buyPlot: () => void;
   togglePause: () => void;
+  openInstructions: () => void;
+  closeInstructions: () => void;
 };
 
 function requiredElement<T extends HTMLElement>(selector: string): T {
@@ -78,9 +80,13 @@ export class GameUi {
   private readonly plotSelector = requiredElement<HTMLElement>('#plot-selector');
   private readonly toast = requiredElement<HTMLElement>('#toast');
   private readonly pausedOverlay = requiredElement<HTMLElement>('#paused-overlay');
+  private readonly instructionsOverlay = requiredElement<HTMLElement>('#instructions-overlay');
+  private readonly instructionsIntro = requiredElement<HTMLElement>('#instructions-intro');
   private readonly pauseSaveStatus = requiredElement<HTMLElement>('#pause-save-status');
   private readonly pauseButton = requiredElement<HTMLButtonElement>('#pause-button');
   private readonly resumeButton = requiredElement<HTMLButtonElement>('#resume-button');
+  private readonly instructionsButton = requiredElement<HTMLButtonElement>('#instructions-button');
+  private readonly closeInstructionsButton = requiredElement<HTMLButtonElement>('#close-instructions-button');
   private readonly saveButton = requiredElement<HTMLButtonElement>('#save-game-button');
   private readonly returnMenuButton = requiredElement<HTMLButtonElement>('#return-menu-button');
   private readonly newGameButton = requiredElement<HTMLButtonElement>('#new-game-button');
@@ -103,6 +109,8 @@ export class GameUi {
     this.buyButton.addEventListener('click', actions.buyPlot);
     this.pauseButton.addEventListener('click', actions.togglePause);
     this.resumeButton.addEventListener('click', actions.togglePause);
+    this.instructionsButton.addEventListener('click', actions.openInstructions);
+    this.closeInstructionsButton.addEventListener('click', actions.closeInstructions);
     this.saveButton.addEventListener('click', actions.saveGame);
     this.returnMenuButton.addEventListener('click', actions.returnToMenu);
     this.newGameButton.addEventListener('click', actions.startNewGame);
@@ -143,6 +151,19 @@ export class GameUi {
     this.pausedOverlay.hidden = !paused;
     this.pauseButton.textContent = paused ? '▶' : 'Ⅱ';
     this.pauseButton.setAttribute('aria-label', paused ? 'Continuar partida' : 'Pausar partida');
+  }
+
+  showInstructions(firstVisit: boolean): void {
+    this.instructionsIntro.textContent = firstVisit
+      ? 'Tu objetivo es recibir viajeros, cuidar las parcelas y hacer crecer el camping. Aquí tienes lo esencial para empezar.'
+      : 'Tu objetivo es recibir viajeros, cuidar las parcelas y hacer crecer el camping.';
+    this.closeInstructionsButton.textContent = firstVisit ? '¡A jugar!' : 'Volver a la pausa';
+    this.instructionsOverlay.hidden = false;
+    this.closeInstructionsButton.focus();
+  }
+
+  hideInstructions(): void {
+    this.instructionsOverlay.hidden = true;
   }
 
   render(state: UiState): void {

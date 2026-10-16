@@ -128,6 +128,18 @@ h1, h2, p { margin: 0; }
 .paused-overlay p { margin-top: 8px; color: var(--muted); font-size: 12px; }
 .paused-overlay button { margin-top: 20px; padding: 12px 18px; border: 0; border-radius: 11px; background: var(--ink); color: white; cursor: pointer; font-size: 12px; font-weight: 700; }
 .paused-overlay .menu-action { margin-top: 9px; }
+.instructions-overlay { position: absolute; z-index: 7; inset: 0; display: grid; place-items: center; overflow-y: auto; padding: 24px; background: rgba(30,46,40,.62); backdrop-filter: blur(7px); }
+.instructions-overlay[hidden] { display: none; }
+.instructions-card { width: min(100%, 560px); max-height: calc(100vh - 48px); overflow-y: auto; padding: 32px; border: 1px solid rgba(255,255,255,.8); border-radius: 24px; background: var(--paper); box-shadow: 0 24px 80px rgba(16,31,25,.28); }
+.instructions-card h2 { margin-top: 12px; font: 800 28px/1.1 Manrope, sans-serif; letter-spacing: -.04em; }
+.instructions-intro { margin-top: 10px; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.instructions-list { display: grid; gap: 14px; margin: 22px 0 0; padding: 0; list-style: none; }
+.instructions-list li { display: flex; align-items: flex-start; gap: 12px; }
+.instructions-list li > span { display: grid; flex: 0 0 28px; width: 28px; height: 28px; place-items: center; border-radius: 9px; background: #e8efdc; color: #526e4d; font-size: 12px; font-weight: 800; }
+.instructions-list strong { display: block; color: var(--ink); font-size: 12px; }
+.instructions-list p { margin-top: 3px; color: var(--muted); font-size: 11px; line-height: 1.5; }
+.instructions-tip { margin-top: 20px; padding: 11px 13px; border-radius: 11px; background: #f0f2e9; color: #67766c; font-size: 11px; line-height: 1.5; }
+.instructions-card .menu-action.primary { margin-top: 16px; }
 .main-menu { position: absolute; z-index: 6; inset: 0; display: grid; place-items: center; padding: 24px; background-color: #263b34; background-image: linear-gradient(120deg, rgba(20,38,33,.66), rgba(28,44,37,.28)), url('/camping-menu.jpg'); background-position: center; background-size: cover; }
 .main-menu[hidden] { display: none; }
 .main-menu-card { width: min(100%, 390px); padding: 38px; border: 1px solid rgba(255,255,255,.8); border-radius: 26px; background: var(--paper); box-shadow: 0 24px 80px rgba(16,31,25,.28); }
@@ -161,4 +173,6 @@ h1, h2, p { margin: 0; }
   .bottom-hint { display: none; }
   .toast { top: 68px; font-size: 10px; }
   .main-menu-card { padding: 28px; }
+  .instructions-overlay { padding: 14px; }
+  .instructions-card { max-height: calc(100vh - 28px); padding: 22px; }
 }

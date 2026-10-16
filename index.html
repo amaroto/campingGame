@@ -79,11 +79,28 @@
           <h2>Un respiro</h2>
           <p>El camping está en pausa.</p>
           <p class="save-status" id="pause-save-status" aria-live="polite"></p>
+          <button class="menu-action secondary" id="instructions-button">Cómo jugar</button>
           <button id="resume-button">Seguir jugando</button>
           <button class="menu-action secondary" id="save-game-button">Guardar partida</button>
           <button class="menu-action secondary" id="return-menu-button">Guardar y volver al menú</button>
         </div>
       </div>
+      <section class="instructions-overlay" id="instructions-overlay" role="dialog" aria-modal="true" aria-labelledby="instructions-title" hidden>
+        <div class="instructions-card">
+          <div class="eyebrow"><span class="live-dot"></span> GUÍA DEL CAMPING</div>
+          <h2 id="instructions-title">Cómo jugar</h2>
+          <p class="instructions-intro" id="instructions-intro">Tu objetivo es recibir viajeros, cuidar las parcelas y hacer crecer el camping.</p>
+          <ol class="instructions-list">
+            <li><span>1</span><div><strong>Recibe viajeros</strong><p>Espera a que aparezcan en recepción y haz clic en uno para seleccionarlo.</p></div></li>
+            <li><span>2</span><div><strong>Asígnales una parcela</strong><p>Elige una parcela libre y limpia haciendo clic en ella o en su número.</p></div></li>
+            <li><span>3</span><div><strong>Controla las estancias</strong><p>Revisa el contador: al terminar, cobrarás y la parcela necesitará limpieza.</p></div></li>
+            <li><span>4</span><div><strong>Limpia y mejora</strong><p>Limpia antes de alojar a otro viajero. Invierte tus ganancias en mejoras y nuevas parcelas.</p></div></li>
+            <li><span>5</span><div><strong>Gestiona el tiempo</strong><p>El reloj muestra la hora del camping; el día y la noche cambian con el tiempo de juego.</p></div></li>
+          </ol>
+          <p class="instructions-tip">Consejo: puedes pausar, guardar la partida o volver al menú desde el botón Ⅱ.</p>
+          <button class="menu-action primary" id="close-instructions-button">¡A jugar!</button>
+        </div>
+      </section>
       <section class="main-menu" id="main-menu" aria-labelledby="main-menu-title">
         <div class="main-menu-card">
           <div class="eyebrow"><span class="live-dot"></span> TU CAMPING TE ESPERA</div>
