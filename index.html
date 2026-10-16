@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#172b28" />
+    <meta name="description" content="Construye y gestiona tu propio camping." />
+    <link rel="icon" href="data:," />
+    <title>Campamento Brisa — Tu pequeño paraíso</title>
+  </head>
+  <body>
+    <div id="game">
+      <canvas id="renderCanvas" aria-label="Vista 3D de tu camping"></canvas>
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Campamento Brisa">
+          <span class="brand-mark">✳</span>
+          <span><strong>BRISA</strong><small>CAMPING</small></span>
+        </a>
+        <div class="top-stats">
+          <div class="stat-pill"><span class="stat-icon" id="day-icon" aria-hidden="true">☀</span><span id="day-label">Día 1</span></div>
+          <div class="stat-pill clock-pill"><span class="stat-icon" aria-hidden="true">◷</span><time id="clock-label" aria-label="Hora del camping">08:00</time></div>
+          <div class="stat-pill money"><span class="stat-icon">◈</span><span id="money-label">180 €</span></div>
+          <button class="icon-button" id="pause-button" aria-label="Pausar partida" title="Pausar">Ⅱ</button>
+        </div>
+      </header>
+      <main class="hud">
+        <section class="welcome-card">
+          <div class="eyebrow"><span class="live-dot"></span> TEMPORADA ABIERTA</div>
+          <h1>Tu rincón<br />junto al bosque.</h1>
+          <p>Cuida cada detalle y los viajeros encontrarán su lugar.</p>
+          <div class="occupancy">
+            <div class="occupancy-label"><span>Parcelas ocupadas</span><strong id="occupancy-label">0 / 2</strong></div>
+            <div class="occupancy-track"><span id="occupancy-bar"></span></div>
+          </div>
+          <section class="guest-queue" aria-label="Cola de viajeros">
+            <div class="queue-heading">
+              <div><span class="eyebrow">RECEPCIÓN</span><h2>Viajeros esperando</h2></div>
+              <span class="queue-count" id="queue-count">0</span>
+            </div>
+            <div class="guest-list" id="guest-list"></div>
+            <p class="queue-hint" id="queue-hint">Los viajeros aparecerán aquí al llegar.</p>
+            <button class="text-button" id="clear-guest-selection" type="button" hidden>Cancelar selección</button>
+          </section>
+          <section class="stay-overview" aria-label="Estancias en curso">
+            <div class="stay-overview-heading">
+              <span class="eyebrow">EN EL CAMPING</span>
+              <span class="stay-overview-count" id="stay-overview-count">0</span>
+            </div>
+            <div class="stay-list" id="stay-list"></div>
+            <p class="stay-empty" id="stay-empty">Todavía no hay viajeros alojados.</p>
+          </section>
+        </section>
+        <section class="management-card">
+          <div class="card-heading">
+            <div><span class="eyebrow">GESTIÓN</span><h2 id="selected-title">Parcela 1</h2></div>
+            <span class="selection-badge" id="plot-status">LIBRE</span>
+          </div>
+          <p class="plot-description" id="plot-description">Una parcela tranquila, perfecta para empezar.</p>
+          <div class="plot-facts">
+            <div><span>Tarifa por estancia</span><strong id="plot-rate">24 €</strong></div>
+            <div><span>Comodidad</span><strong id="plot-level">Básica</strong></div>
+          </div>
+          <div class="stay-timer" id="stay-timer" hidden>
+            <div class="stay-timer-heading"><span>Tiempo para la salida</span><strong id="stay-countdown">00:00</strong></div>
+            <div class="stay-timer-track"><span id="stay-timer-bar"></span></div>
+          </div>
+          <button class="action-button" id="assign-button" hidden>Alojar viajero</button>
+          <button class="secondary-button" id="clean-button" hidden>Limpiar parcela</button>
+          <button class="action-button" id="upgrade-button"><span>Mejorar parcela</span><span id="upgrade-cost">· 65 €</span></button>
+          <button class="secondary-button" id="buy-button" hidden>Comprar parcela <span id="buy-cost">· 90 €</span></button>
+          <div class="plot-selector" id="plot-selector" aria-label="Seleccionar parcela"></div>
+        </section>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+      </main>
+      <footer class="bottom-hint"><span class="hint-spark">✦</span> Elige dónde alojar a cada viajero; después, deja su parcela lista.</footer>
+      <div class="paused-overlay" id="paused-overlay" hidden>
+        <div>
+          <span>Ⅱ</span>
+          <h2>Un respiro</h2>
+          <p>El camping está en pausa.</p>
+          <p class="save-status" id="pause-save-status" aria-live="polite"></p>
+          <button id="resume-button">Seguir jugando</button>
+          <button class="menu-action secondary" id="save-game-button">Guardar partida</button>
+          <button class="menu-action secondary" id="return-menu-button">Guardar y volver al menú</button>
+        </div>
+      </div>
+      <section class="main-menu" id="main-menu" aria-labelledby="main-menu-title">
+        <div class="main-menu-card">
+          <div class="eyebrow"><span class="live-dot"></span> TU CAMPING TE ESPERA</div>
+          <h1 id="main-menu-title">Campamento<br />Brisa</h1>
+          <p>Construye tu pequeño paraíso junto al bosque.</p>
+          <button class="menu-action primary" id="new-game-button">Nueva partida</button>
+          <button class="menu-action secondary" id="load-game-button">Cargar partida</button>
+          <span class="save-status" id="save-status">No hay ninguna partida guardada.</span>
+        </div>
+      </section>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
